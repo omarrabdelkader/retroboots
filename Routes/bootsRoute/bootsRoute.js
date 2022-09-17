@@ -1,6 +1,7 @@
 const multer = require("multer");
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../../Middlewares/authMiddleware");
 const {
   getBoots,
   postBoot,
@@ -26,6 +27,6 @@ router.get("/boots", getBoots);
 
 router.post("/boot", upload.single("image"), postBoot);
 
-router.route("/boot/:id").put(putBoot).delete(deleteBoot);
+router.route("/boot/:id").put(protect, putBoot).delete(protect, deleteBoot);
 
 module.exports = router;

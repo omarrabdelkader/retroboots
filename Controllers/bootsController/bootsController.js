@@ -3,7 +3,7 @@ const Boot = require("../../Models/bootModel");
 
 // @desc Get boots
 // @route GET api/boots
-// @acess Private
+// @acess Public
 const getBoots = asyncHandler(async (req, res) => {
   const boots = await Boot.find();
   res.status(200).json(boots);
@@ -11,9 +11,8 @@ const getBoots = asyncHandler(async (req, res) => {
 
 // @desc Post boots
 // @route POST api/boot
-// @acess Private
+// @acess Public
 const postBoot = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const boot = await Boot.create({
     title: req.body.title,
     price: req.body.price,
@@ -36,6 +35,17 @@ const putBoot = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("This boot does not exist!");
   }
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User does not exist!");
+  }
+
+  if (desiredBoot.user.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized");
+  }
   const updatedBoot = await Boot.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
@@ -50,9 +60,21 @@ const deleteBoot = asyncHandler(async (req, res) => {
   if (!neededBoot) {
     res.status(400);
     throw new Error("This boot doesn't exist!");
-  } else {
-    await neededBoot.remove();
   }
+
+  const user = User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User does not exist!");
+  }
+
+  if (desiredBoot.user.toString() !== user.id) {
+    res.status(401);
+    throw new Error("User not authorized");
+  }
+
+  await neededBoot.remove();
 });
 
 module.exports = { getBoots, postBoot, putBoot, deleteBoot };

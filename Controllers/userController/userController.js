@@ -62,14 +62,18 @@ const loginUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid email, or password!");
   }
-  res.json({ message: "registeration" });
 });
 
 // @desc Get user
 // @route GET api/users/user
 // @acess Private
 const getUser = asyncHandler(async (req, res) => {
-  res.json({ message: "registeration" });
+  const { _id, username, email } = await User.findById(req.user.id);
+  res.json({
+    id: _id,
+    username: username,
+    email: email,
+  });
 });
 
 const generateToken = (id) => {

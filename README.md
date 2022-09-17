@@ -4,9 +4,7 @@ This project is a RESTful API of a footwear store web application, Retro Boots. 
 
 1. Clients can purchase multitudinous products from Retro Boots web application.
 
-2. Clients can create accounts in Retro Boot.
-
-3. Clients can upload images for their desired footwear and we will be seeking it out.
+2. Only authorized clients can upload images for their desired footwear and we will be seeking it out.
 
 # Technical Side
 
@@ -56,13 +54,13 @@ In apiController, we have used both the express-async-handler dependency and the
 
 1.  // @desc Get boots
     // @route GET api/boots
-    // @acess Private
+    // @acess Public
 
 The getBoots function is used to get all boots. We use the find() method in order to get them all.
 
 2.  // @desc Post boots
     // @route POST api/boot
-    // @acess Private
+    // @acess Public
 
 The postBoot function is used to post a new footwear product to the RESTful API. We use the create() method to create a new footwear product in the bootModel schema.
 
@@ -70,13 +68,11 @@ The postBoot function is used to post a new footwear product to the RESTful API.
     // @route PUT api/boot/:id
     // @acess Private
 
-The putBoot function is used to update a certain footwear product. First, we validate the existence of this product. Then, we use the findByIdAndUpdate method to update the product.
+The putBoot function is used to update a certain footwear product. First, we validate the existence of this product. Then, we use the findByIdAndUpdate method to update the product. Only authorized users can perform this action. 4. // @desc Delete boots
+// @route DELETE api/boot/:id
+// @acess Private
 
-4. // @desc Delete boots
-   // @route DELETE api/boot/:id
-   // @acess Private
-
-The deleteBoot function is used to delete a certain footwear product. First, we validate the existence of this product. Then, we use the findByIdAndDelete() method to delete the product.
+The deleteBoot function is used to delete a certain footwear product. First, we validate the existence of this product. Then, we use the findByIdAndDelete() method to delete the product. This action is performed only by authorized users.
 
 ## Route
 
